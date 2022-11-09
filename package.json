@@ -17,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/KaroW97/ADT-List/issues"
   },
-  "homepage": "https://github.com/KaroW97/ADT-List#readme"
+  "homepage": "https://github.com/KaroW97/ADT-List#readme",
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "prettier": "2.7.1"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1"
+  }
 }
