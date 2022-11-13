@@ -8,18 +8,25 @@ const chooseOperation = (list, operator) => {
   const callOperation = {
     '-': subtract,
     '+': sum,
-    // '/':,
+    '/': division,
     '*': multiply
     //'%':
   }
-
-  //if (!['+', '-'].includes(operator)) return new Calculator(operator)
 
   switch (operator) {
     case '*':
     case '/':
     case '%':
-      return callOperation[`${operator}`](list, operator)
+      let sign = '+'
+      if (signNum1 === -1 && signNum2 === -1) sign = '+'
+
+      if (
+        (signNum1 === -1 && signNum2 === 1) ||
+        (signNum1 === 1 && signNum2 === -1)
+      )
+        sign = '-'
+
+      return callOperation[`${operator}`](list, sign)
 
     case '+':
       if (signNum1 === -1 && signNum2 === -1) operator = '+'
@@ -30,7 +37,7 @@ const chooseOperation = (list, operator) => {
       )
         operator = '-'
 
-      return callOperation[`${operator}`](list, operator)
+      return callOperation[`${operator}`](list)
 
     case '-':
       if (
@@ -41,37 +48,37 @@ const chooseOperation = (list, operator) => {
 
       if (signNum1 === -1 && signNum2 === -1) operator = '+'
 
-      return callOperation[`${operator}`](list, operator)
+      return callOperation[`${operator}`](list)
   }
 }
 
+const division = (data, sign) => new Calculator(sign).division(data).getResult()
 /**
  * Get final value from Calculator sum method
  * @param {Record<string, string>} data
  * @param {String} operator
  */
-const sum = (data, operator) =>
-  new Calculator(operator).sum(data).getResult().reverse().join('')
+const sum = (data) => new Calculator().sum(data).getResult().reverse().join('')
 
 /**
  *  Get final value from Calculator multiply method
  * @param {Record<string, string>} data
  * @param {String} operator
  */
-const multiply = (data, operator) =>
-  new Calculator(operator).multiply(data).getResult().reverse().join('')
+const multiply = (data) =>
+  new Calculator().multiply(data).getResult().reverse().join('')
 
 /**
  *  Get final value from Calculator multiply method
  * @param {Record<string, string>} data
  * @param {String} subtraction
  */
-const subtract = (data, operator) =>
-  new Calculator(operator)
+const subtract = (data) =>
+  new Calculator()
     .subtraction(data)
     .getResult()
     .reverse()
     .join('')
     .replace(/^0+/, '')
 
-module.exports = { sum, chooseOperation, subtract }
+module.exports = { chooseOperation }

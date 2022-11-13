@@ -1,13 +1,15 @@
+const LinkedList = require('../list/LinkedList')
 const listUtils = require('../list/listUtils')
 
 class Calculator {
-  constructor(sign) {
-    this.isFirst = true
+  constructor(sign = null) {
     this.sign = sign
+    this.isFirst = true
     this.rest = 0
     this.result = []
     this.multiplyResult = []
     this.tempArray = []
+    this.addZeros = 0
   }
 
   clear() {
@@ -185,19 +187,25 @@ class Calculator {
     return this
   }
 
-  division() {}
-
+  /**
+   *
+   * @param {*} data
+   * @returns
+   */
   subtraction(data) {
     const { num1, num2 } = data
 
+    console.log()
     if (num1.size < num2.size)
-      throw new Error('Pierwsza wartosc musi byc wieksza od 2')
+      throw new Error('The second value is grater then first')
 
     while (num1.size > 0) {
       if (!this.getIsFirst()) {
         let sumUp = num1.head.element + this.rest
 
         if (num2.size > 0) sumUp -= num2.head.element
+        if (sumUp < 0 && num1.size === 1)
+          throw new Error('The second value is grater then first')
 
         this.addressToProperKey(sumUp, false)
       }
@@ -213,6 +221,63 @@ class Calculator {
       num2.size--
     }
     return this
+  }
+
+  /**
+   *
+   * @param {LinkedList} data
+   */
+  division({ num1, num2 }) {
+    console.log({ num1, num2 })
+    let tempDivider = 0,
+      finalIteration = false
+
+    const newNum1 = listUtils.deleteFirstNumber(num1)
+    console.log(newNum1)
+    //const { numberToDivide, zerosAdded } = listUtils.getElements(newNum1, num2)
+    const divider = listUtils.getDivider(listUtils.deleteFirstNumber(num2))
+
+    while (!finalIteration) {
+      if (this.tempArray.length < divider.length && newNum1.size > 0)
+        this.tempArray.push(newNum1.head.element)
+
+      if (newNum1.size <= 0) {
+        this.tempArray.unshift(0)
+        this.addZeros++
+      }
+
+      if (this.tempArray.length === divider.length) {
+        let toBeDivide = this.tempArray.reverse().join('')
+
+        if (toBeDivide / divider < 1.0) {
+          this.addZeros++
+
+          toBeDivide = toBeDivide * 10
+
+          const divided = parseInt(toBeDivide / divider) * divider
+
+          this.rest = toBeDivide - divided
+        } else {
+          const divided = parseInt(toBeDivide / divider) * divider
+          console.log('toBeDivide', toBeDivide)
+          console.log('divided', divided)
+          console.log(toBeDivide - divided)
+          this.rest = toBeDivide - divided
+        }
+
+        finalIteration = true
+      }
+      if (newNum1.head.next) newNum1.head = newNum1.head.next
+      newNum1.size--
+    }
+  }
+
+  /**
+   *
+   * @param {*} data
+   */
+  modulo(data) {
+    while (num1.size > 0) {}
   }
 }
 
